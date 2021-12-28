@@ -112,4 +112,4 @@ elif type compctl &>/dev/null; then
   compctl -K _npm_completion npm
 fi
 ###-end-npm-completion-###
-alias dotconfig='/usr/bin/git --git-dir=/home/an/.dotfiles/ --work-tree=/home/an'
+alias dotconfig='/usr/bin/git --git-dir=/home/an/dotfiles.git/ --work-tree=/home/an'
