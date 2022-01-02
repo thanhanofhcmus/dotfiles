@@ -12,6 +12,9 @@ nnoremap <c-q> :bp<CR>:bd#<CR>
 
 nnoremap <silent><c-t> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 inoremap <silent><c-t> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
+cmap <C-j> <C-n>
+cmap <C-k> <C-p>
+
 
 " inoremap <C-j> <C-n>
 " inoremap <C-k> <C-p>
