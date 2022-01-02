@@ -19,7 +19,7 @@ ZSH_THEME="robbyrussell"
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
 
-plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
+plugins=(git zsh-fzf-history-search zsh-z zsh-syntax-highlighting zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
