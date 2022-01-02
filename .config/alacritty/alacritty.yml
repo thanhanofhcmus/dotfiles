@@ -1,0 +1,84 @@
+window:
+  # Window padding (changes require restart)
+  #
+  # Blank space added around the window in pixels. This padding is scaled
+  # by DPI and the specified value is always added at both opposing sides.
+  padding:
+    x: 5
+    y: 0
+
+  # none | full
+  decorations: none
+
+  dynamic_title: true
+
+  # light | dark | none
+  gtk_theme_variant: None
+
+font:
+  normal:
+    family: JetBrainsMono Nerd Font
+    style: Regular
+
+  bold:
+    family: JetBrainsMono Nerd Font
+    style: Bold
+
+  italic:
+    family: JetBrainsMono Nerd Font
+    style: Italic
+
+  bold_italic:
+    family: JetBrainsMono Nerd Font
+    style: Bold Italic
+
+  size: 10.0
+
+draw_bold_text_with_bright_colors: true
+background_opacity: 0.9
+
+selection:
+  semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
+  save_to_clipboard: false
+
+cursor:
+  style:
+    #   - ▇ Block - _ Underline - | Beam
+    shape: Block
+
+    # Values for `blinking`:
+    #   - Never: Prevent the cursor from ever blinking
+    #   - Off: Disable blinking by default
+    #   - On: Enable blinking by default
+    #   - Always: Force the cursor to always blink
+    blinking: Off
+
+live_config_reload: true
+colors:
+  # Default colors
+  primary:
+    background: '#161821'
+    foreground: '#d2d4de'
+
+  # Normal colors
+  normal:
+    black: '#161821'
+    red: '#e27878'
+    green: '#b4be82'
+    yellow: '#e2a478'
+    blue: '#84a0c6'
+    magenta: '#a093c7'
+    cyan: '#89b8c2'
+    white: '#c6c8d1'
+
+  # Bright colors
+  bright:
+    black: '#6b7089'
+    red: '#e98989'
+    green: '#c0ca8e'
+    yellow: '#e9b189'
+    blue: '#91acd1'
+    magenta: '#ada0d3'
+    cyan: '#95c4ce'
+    white: '#d2d4de'
+theme: Iceberg-Dark
