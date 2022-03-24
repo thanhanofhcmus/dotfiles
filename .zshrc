@@ -26,9 +26,13 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
+export PATH="$PATH:/home/an/.local/bin"
+export PATH="$PATH:/home/an/Vendors/nodejs/bin"
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
+
+export JDTLS_HOME=/usr/bin/jdtls
 
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vi'
@@ -42,6 +46,11 @@ fi
 
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias py=python
+alias claer=clear
+alias ckear=clear
+alias ckaer=clear
+
 [ -f "/home/an/.ghcup/env" ] && source "/home/an/.ghcup/env" # ghcup-env
 ###-begin-npm-completion-###
 #
@@ -111,5 +120,5 @@ elif type compctl &>/dev/null; then
   }
   compctl -K _npm_completion npm
 fi
-###-end-npm-completion-###
+###e-nd-npm-completion-###
 alias dotconfig='/usr/bin/git --git-dir=/home/an/dotfiles.git/ --work-tree=/home/an'
