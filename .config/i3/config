@@ -1,5 +1,7 @@
 font pango:JetBrainsMono Nerd Font Mono 12
 
+for_window [class="Main" instance="Main"] floating enable
+
 focus_follows_mouse no
 
 exec --no-startup-id xset r rate 200 20
@@ -200,8 +202,9 @@ bindsym XF86AudioPrev  exec playerctl previous
 
 ## App shortcuts
 bindsym $mod+f exec /usr/bin/firefox
+bindsym $mod+Shift+f exec /usr/bin/firefox --private-window
 bindsym $mod+e exec /usr/bin/thunar
-bindsym Print exec "scrot ~/%Y-%m-%d-%T-screenshot.png"
+bindsym Print exec "scrot ~/screenshots/%Y-%m-%d-%T-screenshot.png"
 
 set $ws1 "1"
 set $ws2 "2"
@@ -295,3 +298,5 @@ bindsym $mod+d exec rofi -modi drun -show drun \
 
 bindsym $mod+t exec rofi -show window \
         -config ~/.config/rofi/rofidmenu.rasi
+
+for_window [class="electron*"] floating enable, border normal
