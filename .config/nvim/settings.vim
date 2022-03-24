@@ -1,5 +1,5 @@
-syntax enable
 set hidden
+syntax enable
 set nowrap
 set ruler
 set number
@@ -9,7 +9,7 @@ set termguicolors
 
 set pumheight=10
 set cmdheight=2
-set iskeyword+=-
+set iskeyword-=_
 
 set mouse=a
 
@@ -20,12 +20,13 @@ set conceallevel=0
 
 set tabstop=4
 set shiftwidth=4
-set expandtab
+set noexpandtab
 set smarttab
 set smartindent
 set autoindent
 set showtabline=2
 
+set noswapfile
 set nobackup
 set nowritebackup
 set updatetime=300
@@ -35,5 +36,5 @@ autocmd Filetype * set formatoptions-=cro
 
 let mapleader=' '
 
-exec "set listchars=tab:>-,trail:\uB7,nbsp:~"
+" exec "set listchars=tab:  ,trail:\uB7,nbsp:~"
 set list
