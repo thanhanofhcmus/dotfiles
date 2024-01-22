@@ -13,6 +13,23 @@ end
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
     {
+        "lewis6991/gitsigns.nvim",
+    },
+    {
+        'gelguy/wilder.nvim',
+    },
+    {
+        'romgrk/fzy-lua-native',
+    },
+    {
+        "lukas-reineke/indent-blankline.nvim",
+        main = "ibl",
+        opts = {},
+        setup = function()
+            require('ibl').setup({})
+        end
+    },
+    {
         'nvim-telescope/telescope.nvim',
         tag = '0.1.3',
         dependencies = { 'nvim-lua/plenary.nvim' }
@@ -29,6 +46,9 @@ require("lazy").setup({
         'windwp/nvim-autopairs',
         event = "InsertEnter",
         opts = {}
+    },
+    {
+        'nvim-treesitter/nvim-treesitter'
     },
     {
         'neovim/nvim-lspconfig',

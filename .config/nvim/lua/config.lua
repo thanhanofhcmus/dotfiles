@@ -8,7 +8,16 @@ vim.opt.smarttab = true
 vim.opt.smartindent = true
 vim.opt.expandtab = true
 vim.opt.autoindent = true
+vim.opt.spelllang = 'en_us'
+vim.opt.spell = true
+
 vim.opt.list = true
+vim.opt.listchars = { tab = '| ', trail = '•', nbsp = '~' }
+
+-- use plugin widler instead
+vim.cmd [[ set nowildmenu ]]
+-- vim.cmd [[ set wildmode=full ]]
+
 
 vim.o.mouse = 'a'
 vim.o.termguicolors = true
@@ -25,16 +34,16 @@ vim.o.backup = false
 vim.o.writebackup = false
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
-  callback = function()
-	vim.opt.formatoptions:remove('c')
-	vim.opt.formatoptions:remove('r')
-	vim.opt.formatoptions:remove('o')
-  end,
+    callback = function()
+        vim.opt.formatoptions:remove('c')
+        vim.opt.formatoptions:remove('r')
+        vim.opt.formatoptions:remove('o')
+    end,
 })
 
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     pattern = { "*.go", "*.lua" },
-    callback = function ()
+    callback = function()
         vim.lsp.buf.format()
     end
 })
