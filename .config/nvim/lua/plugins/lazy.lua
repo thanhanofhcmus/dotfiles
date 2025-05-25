@@ -36,8 +36,8 @@ require("lazy").setup(
         },
         {
             "kylechui/nvim-surround",
-            tag = "v2.1.0",
-            lazy = false,
+            version = "^3.0.0",
+            event = "VeryLazy",
             config = function()
                 require("nvim-surround").setup({})
             end,
