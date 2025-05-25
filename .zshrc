@@ -23,7 +23,7 @@ fi
 
 alias dotfiles='git --git-dir=$HOME/dev/dotfiles --work-tree=$HOME'
 
-alias l='exa --long --group-directories-first --binary --icons'
+alias l='exa --all --long --group-directories-first --binary --icons'
 alias k=kubectl
 alias cat=bat
 
