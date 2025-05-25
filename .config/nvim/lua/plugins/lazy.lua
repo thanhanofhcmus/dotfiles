@@ -16,7 +16,18 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup(
     {
-        { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+        {
+            "catppuccin/nvim",
+            name = "catppuccin",
+            priority = 1000,
+        },
+        {
+            'mikesmithgh/borderline.nvim',
+            enabled = true,
+            lazy = true,
+            event = 'VeryLazy',
+            config = function() require('borderline').setup({}) end,
+        },
         {
             "lewis6991/gitsigns.nvim",
         },
