@@ -10,14 +10,13 @@ vim.opt.expandtab = true
 vim.opt.autoindent = true
 vim.opt.spelllang = 'en_us'
 vim.opt.spell = true
+vim.opt.signcolumn = 'yes'
+
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
 vim.opt.list = true
 vim.opt.listchars = { tab = '| ', trail = '•', nbsp = '~' }
-
--- use plugin widler instead
-vim.cmd [[ set nowildmenu ]]
--- vim.cmd [[ set wildmode=full ]]
-
 
 vim.o.mouse = 'a'
 vim.o.termguicolors = true
@@ -27,7 +26,7 @@ vim.o.fileencoding = 'utf-8'
 vim.o.splitbelow = true
 vim.o.splitright = true
 vim.o.eadirection = 'hor'
-vim.o.t_Co = '256'
+-- vim.o.t_Co = '256'
 
 vim.o.swapfile = false
 vim.o.backup = false

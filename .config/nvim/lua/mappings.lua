@@ -8,13 +8,11 @@ end
 
 vim.g.mapleader = ' '
 
-map('', '<C-O>', ':Telescope find_files<CR>')
 map('', '<leader>ff', ':Telescope find_files<CR>')
 map('', '<leader>fb', ':Telescope buffers<CR>')
 map('', '<leader>fw', ':Telescope live_grep<CR>')
 
-map('n', '<leader>te', ':Neotree toggle<CR>')
-map('n', '<leader>tr', ':Neotree reveal<CR>')
+map('n', '<leader>e', ':Neotree toggle<CR>')
 
 map('n', '<leader>tk', '<C-w>t<C-w>K') -- change vertical to horizontal
 
