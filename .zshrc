@@ -2,23 +2,10 @@ export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME="af-magic" # set by `omz`
 
-plugins=(git zsh-fzf-history-search z zsh-syntax-highlighting zsh-autosuggestions)
+plugins=(git z zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
-source $HOME/.cargo/env
-
-
-# MACOS envs
-
-# This is for installation of mysql-client package without mysql packge only
-# If user chooses to install mysql package, remove mysql-client package and disable this line
-export PATH="/usr/local/opt/mysql-client/bin:$PATH"
-# use brew for zig 
-# export PATH="/Users/anlap/Vendors/zig:$PATH"
-export PATH="/Applications/Docker.app/Contents/Resources/bin:$PATH"
-export PATH="$PATH:${HOME}/go/bin"
-
-alias load-nvm="source $HOME/.nvm-loader.sh"
+# source $HOME/.cargo/env
 
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
 [[ $commands[gh] ]] && source <(gh completion --shell zsh)
@@ -34,13 +21,13 @@ else
   export VISUAL='nvim'
 fi
 
+alias dotfiles='git --git-dir=$HOME/dev/dotfiles --work-tree=$HOME'
 
-alias py=python
-alias claer=clear
-alias ckear=clear
-alias ckaer=clear
-
+alias l='exa --long --group-directories-first --binary --icons'
 alias k=kubectl
-alias kdev='kubectl --kubeconfig="$HOME/.kube/config.dev"'
+alias cat=bat
 
-[ -f "/Users/anlap/.ghcup/env" ] && source "/Users/anlap/.ghcup/env" # ghcup-env
+export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/.local/share/JetBrains/Toolbox/scripts:$PATH
+
+eval "$(starship init zsh)"
