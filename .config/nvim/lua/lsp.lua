@@ -18,7 +18,10 @@ cmp.setup({
             vim.snippet.expand(args.body)
         end,
     },
-    mapping = cmp.mapping.preset.insert({}),
+    mapping = cmp.mapping.preset.insert({
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<CR>'] = cmp.mapping.confirm({ select = true })
+    }),
 })
 
 cmp.setup.cmdline('/', {
