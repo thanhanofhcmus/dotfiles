@@ -1,7 +1,6 @@
 require('plugins.lazy')
 require('plugins.telescope')
 require('plugins.gitsigns')
-require('plugins.neotree')
 
 require('commands')
 require('configs')

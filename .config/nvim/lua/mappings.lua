@@ -11,8 +11,9 @@ vim.g.mapleader = ' '
 map('', '<leader>ff', ':Telescope find_files<CR>')
 map('', '<leader>fb', ':Telescope buffers<CR>')
 map('', '<leader>fw', ':Telescope live_grep<CR>')
+map('', '<leader>fo', ':Telescope oldfiles<CR>')
 
-map('n', '<leader>e', ':Neotree toggle<CR>')
+map('', '<leader>e', ':Yazi<CR>')
 
 map('n', '<leader>tk', '<C-w>t<C-w>K') -- change vertical to horizontal
 

@@ -29,6 +29,17 @@ require("lazy").setup(
             config = function() require('borderline').setup({}) end,
         },
         {
+            "mikavilpas/yazi.nvim",
+            event = "VeryLazy",
+            opts = {
+                open_for_directories = true,
+            },
+            init = function()
+                -- vim.g.loaded_netrw = 1
+                vim.g.loaded_netrwPlugin = 1
+            end,
+        },
+        {
             "lewis6991/gitsigns.nvim",
         },
         {
@@ -73,15 +84,6 @@ require("lazy").setup(
                 'hrsh7th/cmp-path',
                 'hrsh7th/cmp-cmdline',
                 'hrsh7th/cmp-nvim-lsp-signature-help',
-            }
-        },
-        {
-            "nvim-neo-tree/neo-tree.nvim",
-            branch = "v3.x",
-            dependencies = {
-                "nvim-lua/plenary.nvim",
-                "nvim-tree/nvim-web-devicons",
-                "MunifTanjim/nui.nvim",
             }
         },
     },
