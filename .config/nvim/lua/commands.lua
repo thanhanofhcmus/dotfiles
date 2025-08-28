@@ -1,7 +1,15 @@
-vim.api.nvim_create_user_command("Format", function()
+vim.api.nvim_create_user_command("Fmt", function()
     vim.lsp.buf.format()
 end, {})
 
-vim.api.nvim_create_user_command("Fmt", function()
-    vim.lsp.buf.format()
+vim.api.nvim_create_user_command('PwdCB', function()
+    local path = vim.fn.expand('%')
+    vim.fn.setreq('+', path)
+    print('Copied: ' .. path)
+end, {})
+
+vim.api.nvim_create_user_command('PwdAbsCB', function()
+    local path = vim.fn.expand('%:p')
+    vim.fn.setreq('+', path)
+    print('Copied: ' .. path)
 end, {})

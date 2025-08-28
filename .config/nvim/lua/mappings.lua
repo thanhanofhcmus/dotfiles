@@ -12,17 +12,15 @@ map('', '<leader>ff', ':Telescope find_files<CR>')
 map('', '<leader>fb', ':Telescope buffers<CR>')
 map('', '<leader>fw', ':Telescope live_grep<CR>')
 map('', '<leader>fo', ':Telescope oldfiles<CR>')
+map('', '<leader>fm', ':Telescope marks<CR>')
+map('', '<leader>fr', ':Telescope resume<CR>')
 
 map('', '<leader>e', ':Yazi<CR>')
-
-map('n', '<leader>tk', '<C-w>t<C-w>K') -- change vertical to horizontal
 
 map('n', '<leader>gh', '<cmd>Gitsigns preview_hunk<CR>')
 map('n', '<leader>gj', '<cmd>Gitsigns next_hunk<CR>')
 map('n', '<leader>gh', '<cmd>Gitsigns prev_hunk<CR>')
 map('n', '<leader>gd', '<cmd>Gitsigns diffthis<CR>')
 
-map('n', '<leader>gst', '<cmd>Telescope git_status<CR>')
-map('n', '<leader>glo', '<cmd>Telescope git_commits<CR>')
-map('n', '<leader>gbr', '<cmd>Telescope git_branches<CR>')
-map('n', '<leader>gsl', '<cmd>Telescope git_stash<CR>')
+
+map('n', '<leader>la', '<cmd>lua require("actions-preview").code_actions()<CR>')

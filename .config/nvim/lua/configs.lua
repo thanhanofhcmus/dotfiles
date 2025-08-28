@@ -15,6 +15,8 @@ vim.opt.signcolumn = 'yes'
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
+vim.opt.maxmempattern = 100000
+
 vim.opt.list = true
 vim.opt.listchars = { tab = '| ', trail = '•', nbsp = '~' }
 
@@ -41,7 +43,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 })
 
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-    pattern = { "*.go", "*.lua", "*.cpp", "*.h" },
+    pattern = { "*.go", "*.lua", "*.cpp", "*.h", "*.rs" },
     callback = function()
         vim.lsp.buf.format()
     end
