@@ -22,17 +22,10 @@ require("lazy").setup(
             priority = 1000,
         },
         {
-            'mikesmithgh/borderline.nvim',
-            enabled = true,
-            lazy = true,
-            event = 'VeryLazy',
-            config = function() require('borderline').setup({}) end,
-        },
-        {
             "mikavilpas/yazi.nvim",
             event = "VeryLazy",
             opts = {
-                open_for_directories = true,
+                open_for_directories = false,
             },
             init = function()
                 -- vim.g.loaded_netrw = 1
@@ -53,7 +46,7 @@ require("lazy").setup(
         },
         {
             'nvim-telescope/telescope.nvim',
-            tag = '0.1.3',
+            tag = '0.1.8',
             dependencies = { 'nvim-lua/plenary.nvim' }
         },
         {
@@ -86,6 +79,24 @@ require("lazy").setup(
                 'hrsh7th/cmp-nvim-lsp-signature-help',
             }
         },
-    },
-    {}
+        {
+            "aznhe21/actions-preview.nvim",
+            opts = {
+                telescope = {
+                    layout_strategy = "vertical",
+                    layout_config = {
+                        width = 0.6,
+                        height = 0.8,
+                        prompt_position = "bottom",
+                    },
+                },
+            },
+        },
+        {
+            'mfussenegger/nvim-dap'
+        },
+        {
+            'leoluz/nvim-dap-go'
+        }
+    }
 )
