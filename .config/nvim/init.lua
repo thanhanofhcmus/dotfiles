@@ -7,3 +7,5 @@ require('configs')
 require('mappings')
 require('lsp')
 require('themes')
+
+require('plugins.ufo')
