@@ -47,4 +47,6 @@ require("catppuccin").setup({
     },
 })
 
+vim.o.winborder = "rounded"
+
 vim.cmd.colorscheme "catppuccin"

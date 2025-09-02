@@ -22,6 +22,11 @@ cmp.setup({
         ['<C-Space>'] = cmp.mapping.complete(),
         ['<CR>'] = cmp.mapping.confirm({ select = true })
     }),
+    -- remember to set vim.o.winborder = "rounded"
+    window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+    },
 })
 
 cmp.setup.cmdline('/', {
@@ -56,6 +61,7 @@ local on_attach = function(_, bufnr)
 end
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
 
 nvim_lsp.lua_ls.setup {
     capabilities = capabilities,
