@@ -28,11 +28,20 @@ vim.o.fileencoding = 'utf-8'
 vim.o.splitbelow = true
 vim.o.splitright = true
 vim.o.eadirection = 'hor'
+vim.o.hlsearch = false
 -- vim.o.t_Co = '256'
+
+-- for ufo
+vim.o.foldenable = true
+vim.o.foldlevel = 99
+vim.o.foldlevelstart = 99
+vim.o.foldcolumn = '0'
 
 vim.o.swapfile = false
 vim.o.backup = false
 vim.o.writebackup = false
+
+vim.o.winborder = "rounded"
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
     callback = function()
@@ -40,11 +49,4 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
         vim.opt.formatoptions:remove('r')
         vim.opt.formatoptions:remove('o')
     end,
-})
-
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-    pattern = { "*.go", "*.lua", "*.cpp", "*.h", "*.rs" },
-    callback = function()
-        vim.lsp.buf.format()
-    end
 })
