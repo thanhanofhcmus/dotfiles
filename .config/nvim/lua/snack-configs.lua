@@ -16,7 +16,10 @@ return {
         enabled = true,
         animate = {
             enabled = false
-        }
+        },
+        scope = {
+            enabled = true,
+        },
     },
     input = {
         enabled = true
