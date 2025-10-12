@@ -21,19 +21,6 @@ require('lazy').setup({
     checker = { enabled = true },
     spec = {
         {
-            'nvim-telescope/telescope.nvim',
-            -- the current release have some bugs with neovim 0.11.4
-            -- branch = '0.1.x',
-            commit = 'b4da76be54691e854d3e0e02c36b0245f945c2c7',
-            dependencies = { 'nvim-lua/plenary.nvim' },
-            opts = {
-                defaults = {
-                    layout_config = { horizontal = { width = 0.9 } },
-                    file_ignore_patterns = { "node_modules", "build*" }
-                }
-            }
-        },
-        {
             'nvim-treesitter/nvim-treesitter',
             branch = 'master',
             lazy = false,
