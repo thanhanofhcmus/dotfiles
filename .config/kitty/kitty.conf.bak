@@ -1,5 +1,4 @@
-# font_family      FiraCode Nerd Font
-font_family      Monaspace Neon Nerd Font
+font_family      FiraCode Nerd Font
 bold_font        auto
 italic_font      auto
 bold_italic_font auto
@@ -7,8 +6,6 @@ bold_italic_font auto
 font_size 14.0
 
 disable_ligatures never
-
-tab_bar_edge top
 
 mouse_hide_wait 0
 
@@ -25,6 +22,6 @@ sync_to_monitor yes
 cursor_trail 0
 
 # BEGIN_KITTY_THEME
-# Default
+# Darkside
 include current-theme.conf
 # END_KITTY_THEME
