@@ -1,0 +1,19 @@
+dialect = "uk"
+
+timezone = "local"
+
+auto_sync = false
+update_check = true
+
+search_mode = "fuzzy"
+
+style = "full" ## auto, full, compact
+
+show_preview = true
+
+enter_accept = false
+
+[sync]
+records = true
+
+# debug = true
