@@ -31,10 +31,20 @@ return {
         enabled = true
     },
     picker = {
-        enabled = true
+        enabled = true,
+        sources = {
+            explorer = {
+                auto_close = true,
+                -- layout = { layout = { position = "right" } },
+                layout = { 
+                    preset = 'telescope',
+                    reverse = false,
+                },
+            },
+        },
     },
     notifier = {
-        enabled = true
+        enabled = true,
     },
     quickfile = {
         enabled = true
