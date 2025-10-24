@@ -50,8 +50,9 @@ local servers = {
     'golangci_lint_ls',
     'zls',
     'yamlls',
+    'bashls',
     -- 'terraform_lsp', -- don't use this
-    -- 'terraformls'
+    'terraformls'
 }
 
 for _, lsp in ipairs(servers) do
@@ -75,7 +76,7 @@ vim.lsp.enable('lua_ls')
 
 -- Formatting
 
-local function auto_format_callback()
+local auto_format_callback = function()
     local filetypes = { "lua", "c", "cpp", "go", "zig" }
     local function is_lsp_supports_fomatting(client)
         return client.supports_method('textDocument/formatting')
