@@ -25,8 +25,8 @@ vim.keymap.set('n', 'gr', Snacks.picker.lsp_references, opts)
 vim.keymap.set('n', 'gI', Snacks.picker.lsp_implementations, opts)
 vim.keymap.set('n', 'gp', Snacks.picker.diagnostics, opts)
 
-vim.keymap.set('n', 'g]', function() vim.diagnostic.jump({ count = 1 }) end, opts)
-vim.keymap.set('n', 'g[', function() vim.diagnostic.jump({ count = -1 }) end, opts)
+vim.keymap.set('n', 'g]', function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
+vim.keymap.set('n', 'g[', function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
 vim.keymap.set('n', 'gh', vim.lsp.buf.hover, opts)
 vim.keymap.set('n', 'gj', vim.diagnostic.open_float, opts)
 
