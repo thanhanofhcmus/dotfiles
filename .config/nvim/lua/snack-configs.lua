@@ -36,7 +36,7 @@ return {
             explorer = {
                 auto_close = true,
                 -- layout = { layout = { position = "right" } },
-                layout = { 
+                layout = {
                     preset = 'telescope',
                     reverse = false,
                 },
@@ -59,7 +59,13 @@ return {
         enabled = true
     },
     terminal = {
-        enabled = false
+        enabled = true,
+        win = {
+            style = 'float',
+            border = 'rounded',
+            width = math.floor(vim.o.columns * 0.8),
+            height = math.floor(vim.o.lines * 0.8),
+        }
     },
     toggle = {
         enabled = false

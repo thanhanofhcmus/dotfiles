@@ -40,4 +40,6 @@ vim.keymap.set('n', '<leader>fo', Snacks.picker.recent, opts)
 vim.keymap.set('n', '<leader>fm', Snacks.picker.marks, opts)
 vim.keymap.set('n', '<leader>fr', Snacks.picker.resume, opts)
 
-vim.keymap.set('n', '<leader>e', Snacks.explorer.open, opts)
+vim.keymap.set('n', '<leader>oe', Snacks.explorer.open, opts)
+vim.keymap.set('n', '<leader>og', Snacks.lazygit.open, opts)
+vim.keymap.set('n', '<leader>ot', Snacks.terminal.toggle, opts)
