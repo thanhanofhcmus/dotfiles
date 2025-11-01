@@ -32,6 +32,8 @@ vim.keymap.set('n', 'gj', vim.diagnostic.open_float, opts)
 
 vim.keymap.set('n', '<leader>lr', vim.lsp.buf.rename, opts)
 vim.keymap.set('n', '<leader>la', vim.lsp.buf.code_action, opts)
+vim.keymap.set('n', '<leader>ls', Snacks.picker.lsp_symbols, opts)
+vim.keymap.set('n', '<leader>lS', Snacks.picker.lsp_workspace_symbols, opts)
 
 vim.keymap.set('n', '<leader>ff', Snacks.picker.files, opts)
 vim.keymap.set('n', '<leader>fb', Snacks.picker.buffers, opts)
