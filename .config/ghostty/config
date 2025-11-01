@@ -1,0 +1,6 @@
+theme = light:Nvim Light,dark:Nvim Dark
+
+font-size = 15
+
+window-inherit-working-directory = false
+working-directory = home
