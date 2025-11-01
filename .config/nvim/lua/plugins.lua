@@ -59,6 +59,7 @@ require('lazy').setup({
         },
         {
             'folke/snacks.nvim',
+            version = "^2.0.0",
             priority = 1000,
             lazy = false,
             opts = require('snack-configs')
