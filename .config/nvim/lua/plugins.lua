@@ -63,6 +63,16 @@ require('lazy').setup({
             priority = 1000,
             lazy = false,
             opts = require('snack-configs')
-        }
+        },
+        {
+            'nvim-lualine/lualine.nvim',
+            dependencies = { 'nvim-tree/nvim-web-devicons' },
+            opts = {
+                options = {
+                    component_separators = { left = '|', right = '|' },
+                    section_separators = { left = '', right = '' },
+                }
+            },
+        },
     },
 });
