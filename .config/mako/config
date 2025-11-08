@@ -1,0 +1,10 @@
+font=JetBrainsMono Nerd Font 14
+
+background-color=#111317
+
+width=600
+height=500
+
+default-timeout=5000
+
+border-radius=5
