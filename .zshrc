@@ -15,19 +15,15 @@ else
   export VISUAL='nvim'
 fi
 
-source $ZSH/oh-my-zsh.sh
-source $HOME/.cargo/env
+LOCAL_MACHINE_DIR="$HOME/.local_machine"
 
-# This will be of specific computer
-export PATH=$HOME/go/bin:$PATH
-export PATH=$HOME/.local/bin:$PATH
-export PATH=$HOME/.local/share/JetBrains/Toolbox/scripts:$PATH
-export PATH=$HOME/dev/Vendors/zig-x86_64-linux-0.15.1:$PATH
+if [[ -d $LOCAL_MACHINE_DIR ]]; then
+  for f in $LOCAL_MACHINE_DIR/*.(sh|zsh)(N); do
+    source "$f"
+  done
+fi
 
 alias dfs='git --git-dir=$HOME/dev/dotfiles --work-tree=$HOME'
-
-# TODO: bat is different name on different OS, make this OS diagnostic
-alias cat=bat
 
 autoload -U +X bashcompinit && bashcompinit
 
