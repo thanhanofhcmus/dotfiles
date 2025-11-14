@@ -44,4 +44,4 @@ vim.keymap.set('n', '<leader>fr', Snacks.picker.resume, opts)
 
 vim.keymap.set('n', '<leader>oe', Snacks.explorer.open, opts)
 vim.keymap.set('n', '<leader>og', Snacks.lazygit.open, opts)
-vim.keymap.set('n', '<leader>ot', Snacks.terminal.toggle, opts)
+vim.keymap.set('n', '<leader>ot', function() Snacks.terminal.toggle(nil, { interactive = false }) end, opts)
