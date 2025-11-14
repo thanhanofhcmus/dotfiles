@@ -17,7 +17,8 @@
   "theme": "Ayu Mirage",
   "vim_mode": true,
   "vim": {
-    "use_smartcase_find": true
+    "use_smartcase_find": true,
+    "use_system_clipboard": "never"
   },
   "project_panel": {
     "dock": "right"
