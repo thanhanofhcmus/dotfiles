@@ -1,6 +1,6 @@
 {
 	"temperature": {
-		"thermal-zone": 1,
+		"thermal-zone": 10,
 		// "hwmon-path":
 		// "hwmon-path-abs":
 		// "input-filename":
@@ -21,6 +21,6 @@
 		// "on-scroll-down":
 		// "smooth-scrolling-threshold":
 		// "tooltip":
-		"tooltip-format": "Temp in Fahrenheit: {temperatureF}°F"
+		// "tooltip-format": "Temp in Fahrenheit: {temperatureF}°F"
 	}
 }
