@@ -80,7 +80,7 @@ vim.lsp.enable('lua_ls')
 -- Formatting
 
 local auto_format_callback = function()
-    local filetypes = { "lua", "c", "cpp", "go", "cs", "zig", "terraform", "hcl", }
+    local filetypes = { "lua", "rust", "c", "cpp", "go", "cs", "zig", "terraform", "hcl", }
     local function is_lsp_supports_fomatting(client)
         return client.supports_method('textDocument/formatting')
     end

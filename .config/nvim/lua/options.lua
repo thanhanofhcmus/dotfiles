@@ -29,7 +29,6 @@ vim.o.splitbelow = true
 vim.o.splitright = true
 vim.o.eadirection = 'hor'
 vim.o.hlsearch = false
--- vim.o.t_Co = '256'
 
 -- for ufo
 vim.o.foldenable = true

@@ -27,6 +27,8 @@ vim.keymap.set('n', 'gp', Snacks.picker.diagnostics, opts)
 
 vim.keymap.set('n', 'g]', function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
 vim.keymap.set('n', 'g[', function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
+vim.keymap.set('n', 'g}', function() vim.diagnostic.jump({ severity = "ERROR", count = 1, float = true }) end, opts)
+vim.keymap.set('n', 'g{', function() vim.diagnostic.jump({ severity = "ERROR", count = -1, float = true }) end, opts)
 vim.keymap.set('n', 'gh', vim.lsp.buf.hover, opts)
 vim.keymap.set('n', 'gj', vim.diagnostic.open_float, opts)
 
