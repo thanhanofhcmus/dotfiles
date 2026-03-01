@@ -18,3 +18,13 @@ tooltip {
 tooltip > box {
 	padding: 0 6px;
 }
+
+/* Not the standard color in the theme.css file, but looks good enough */
+#submap {
+    background-color: #ff5555; /* Bright Red */
+    color: #ffffff;
+    padding: 0 15px;
+    margin: 4px 0;
+    border-radius: 5px;
+    font-weight: bold;
+}
