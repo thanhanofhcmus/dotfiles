@@ -7,3 +7,5 @@ require('options')
 require('keymaps')
 require('lsp')
 require('themes')
+
+-- require('vim._core.ui2').enable({})

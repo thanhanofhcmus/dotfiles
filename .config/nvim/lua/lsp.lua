@@ -83,7 +83,7 @@ vim.lsp.enable('lua_ls')
 local auto_format_callback = function()
     local filetypes = { "lua", "rust", "c", "cpp", "go", "cs", "zig", "terraform", "hcl", }
     local function is_lsp_supports_fomatting(client)
-        return client.supports_method('textDocument/formatting')
+        return client:supports_method('textDocument/formatting')
     end
 
     if not vim.tbl_contains(filetypes, vim.bo.filetype) then
