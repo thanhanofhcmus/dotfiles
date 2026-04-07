@@ -27,6 +27,9 @@ require('lazy').setup({
             build = ':TSUpdate'
         },
         {
+            'nvim-treesitter/nvim-treesitter-context',
+        },
+        {
             "kylechui/nvim-surround",
             version = "^3.0.0",
             event = "VeryLazy",
