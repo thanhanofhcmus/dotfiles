@@ -54,6 +54,7 @@ local servers = {
     'basedpyright',
     'tofu_ls',
     'csharp_ls',
+    'denols',
     -- 'terraform_lsp', -- don't use this
     -- 'terraformls'
 }

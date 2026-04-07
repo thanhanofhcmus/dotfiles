@@ -84,6 +84,20 @@ require('lazy').setup({
             config = function()
                 require('kitty-scrollback').setup()
             end,
-        }
+        },
+
+        --- THEMES ---
+
+        {
+            "catppuccin/nvim",
+            name = "catppuccin",
+        },
+        {
+            'ayu-theme/ayu-vim',
+            init = function()
+                -- Pick one: "light", "mirage", or "dark"
+                vim.g.ayucolor = "mirage"
+            end,
+        },
     },
 });

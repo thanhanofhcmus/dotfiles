@@ -21,7 +21,6 @@ vim.opt.list = true
 vim.opt.listchars = { tab = '| ', trail = '•', nbsp = '~' }
 
 vim.o.mouse = 'a'
-vim.o.termguicolors = true
 vim.o.hidden = true
 vim.o.encoding = 'utf-8'
 vim.o.fileencoding = 'utf-8'
