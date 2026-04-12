@@ -28,7 +28,13 @@ return {
         enabled = true
     },
     lazygit = {
-        enabled = true
+        enabled = true,
+        win = {
+            style = 'float',
+            border = 'rounded',
+            width = math.floor(vim.o.columns * 0.8),
+            height = math.floor(vim.o.lines * 0.8),
+        },
     },
     picker = {
         enabled = true,
@@ -65,7 +71,7 @@ return {
             border = 'rounded',
             width = math.floor(vim.o.columns * 0.8),
             height = math.floor(vim.o.lines * 0.8),
-        }
+        },
     },
     toggle = {
         enabled = false
