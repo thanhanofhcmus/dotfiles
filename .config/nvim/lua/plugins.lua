@@ -94,13 +94,19 @@ require('lazy').setup({
         {
             "catppuccin/nvim",
             name = "catppuccin",
-        },
-        {
-            'ayu-theme/ayu-vim',
-            init = function()
-                -- Pick one: "light", "mirage", or "dark"
-                vim.g.ayucolor = "mirage"
-            end,
+            opts = {
+                flavour = "auto",
+                background = {
+                    light = "latte",
+                    dark = "mocha",
+                },
+                transparent_background = true,
+                float = {
+                    transparent = true,
+                    solid = false,
+                },
+                auto_integrations = true,
+            }
         },
     },
 });
