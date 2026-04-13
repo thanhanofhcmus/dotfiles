@@ -37,7 +37,7 @@ autoload -U +X bashcompinit && bashcompinit
 [[ $commands[aws]    ]] && complete -C /usr/bin/aws_completer aws
 
 if [[ $commands[eza] ]] then
-    alias l='eza --all --long --group-directories-first --binary --icons'
+    alias l='eza --all --long --group-directories-first --binary --icons=auto'
 fi
 
 if [[ $commands[terraform] ]] then
