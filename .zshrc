@@ -45,9 +45,27 @@ if [[ $commands[terraform] ]] then
     complete -o nospace -C /usr/bin/terraform terraform
 fi
 
-if [[ $commands[kubectl] ]] then
+if [[ $commands[kubectl] ]]; then
     source <(kubectl completion zsh)
     kdo=(--dry-run=client -o=yaml)
-    alias k=kubectl
-fi
 
+    if [[ $commands[kubecolor] ]]; then
+        alias k=kubecolor
+
+        # We define a function named kubecolor that calls kubectl's completion.
+        # This satisfies the internal check in the completion script.
+        _kubecolor_completion() {
+            # Tell the completion script we are actually 'kubectl'
+            local WORD=$words[1]
+            words[1]=kubectl
+            _kubectl
+            words[1]=$WORD
+        }
+
+        # Bind our fake-out function to both 'kubecolor' and 'k'
+        compdef _kubecolor_completion kubecolor k
+    else
+        alias k=kubectl
+        compdef __start_kubectl k
+    fi
+fi
