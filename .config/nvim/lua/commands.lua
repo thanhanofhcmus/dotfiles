@@ -2,6 +2,11 @@ vim.api.nvim_create_user_command("Fmt", function()
     vim.lsp.buf.format()
 end, {})
 
+vim.api.nvim_create_user_command('Pwd', function()
+    local path = vim.fn.expand('%')
+    print(path)
+end, {})
+
 
 vim.api.nvim_create_user_command('PwdCB', function()
     local path = vim.fn.expand('%')

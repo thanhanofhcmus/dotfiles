@@ -48,6 +48,9 @@ require('lazy').setup({
             },
         },
         {
+            "lewis6991/gitsigns.nvim"
+        },
+        {
             'neovim/nvim-lspconfig',
         },
         {
@@ -98,7 +101,7 @@ require('lazy').setup({
                 flavour = "auto",
                 background = {
                     light = "latte",
-                    dark = "mocha",
+                    dark = "frappe",
                 },
                 transparent_background = true,
                 float = {

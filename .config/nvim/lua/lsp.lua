@@ -43,23 +43,21 @@ cmp.setup.cmdline(':', {
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-local servers = {
+local enabled_lsps = {
     'clangd',
     'rust_analyzer',
     'gopls',
-    'golangci_lint_ls',
     'zls',
+    'golangci_lint_ls',
     'yamlls',
     'bashls',
     'basedpyright',
     'tofu_ls',
-    'csharp_ls',
     'denols',
     -- 'terraform_lsp', -- don't use this
     -- 'terraformls'
 }
-
-for _, lsp in ipairs(servers) do
+for _, lsp in ipairs(enabled_lsps) do
     vim.lsp.config(lsp, { capabilities = capabilities, })
     vim.lsp.enable(lsp)
 end
@@ -80,13 +78,24 @@ vim.lsp.enable('lua_ls')
 
 -- Formatting
 
+local auto_fmt_filetypes = {
+    "lua",
+    "rust",
+    "c",
+    "cpp",
+    "go",
+    "zig",
+    "terraform",
+    "hcl",
+    "odin",
+}
+
 local auto_format_callback = function()
-    local filetypes = { "lua", "rust", "c", "cpp", "go", "cs", "zig", "terraform", "hcl", }
     local function is_lsp_supports_fomatting(client)
         return client:supports_method('textDocument/formatting')
     end
 
-    if not vim.tbl_contains(filetypes, vim.bo.filetype) then
+    if not vim.tbl_contains(auto_fmt_filetypes, vim.bo.filetype) then
         return
     end
 
