@@ -13,10 +13,10 @@ hl(0, 'NormalFloat', { bg = "none" })
 hl(0, 'FloatBorder', { bg = "none" })
 hl(0, 'Pmenu', { bg = "none" })
 
-hl(0, 'Keyword', { fg = "NvimLightYellow" })
-hl(0, 'SnacksIndentScope', { fg = "white" })
+hl(0, 'Keyword', { ctermfg = 'yellow', fg = "NvimLightYellow", bold = true })
+hl(0, 'SnacksIndentScope', { ctermfg = 'white', fg = "white" })
 hl(0, 'SnacksPickerDir', { fg = "NvimLightGrey4" })
 
 -- Add default comments/strings for GUI if not defined elsewhere
 hl(0, 'Comment', { fg = "NvimLightGrey3", italic = true })
-hl(0, 'String', { fg = "NvimLightGreen" })
+hl(0, 'String', { ctermfg = 113, fg = "NvimLightGreen" })
