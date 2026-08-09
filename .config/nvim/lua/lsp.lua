@@ -52,8 +52,11 @@ local enabled_lsps = {
     'yamlls',
     'bashls',
     'basedpyright',
+    'ruff',
     'tofu_ls',
-    'denols',
+    -- 'denols',
+    'vtsls',
+    'ruby_lsp',
     -- 'terraform_lsp', -- don't use this
     -- 'terraformls'
 }
@@ -88,6 +91,8 @@ local auto_fmt_filetypes = {
     "terraform",
     "hcl",
     "odin",
+    "py",
+    "ts",
 }
 
 local auto_format_callback = function()
