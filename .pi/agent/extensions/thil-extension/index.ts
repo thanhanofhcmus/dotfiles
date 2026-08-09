@@ -19,6 +19,7 @@ import {
 	Text,
 } from "@earendil-works/pi-tui";
 import { Type } from "typebox";
+import { readFileSync } from "node:fs";
 import { readFile, writeFile } from "node:fs/promises";
 
 // ---------------------------------------------------------------------------
@@ -198,10 +199,26 @@ function renderProposalResult(
 // Diff preview builder
 // ---------------------------------------------------------------------------
 
-function buildDiffPreview(_path: string, oldText: string, newText: string): string {
+function findLineOffset(filePath: string, text: string): number {
+	try {
+		const content = readFileSync(filePath, "utf-8");
+		const idx = content.indexOf(text);
+		if (idx === -1) return 1; // not found, default to 1
+		// Count newlines before the match
+		let lines = 1;
+		for (let i = 0; i < idx; i++) {
+			if (content[i] === "\n") lines++;
+		}
+		return lines;
+	} catch {
+		return 1; // file not readable, default to 1
+	}
+}
+
+function buildDiffPreview(oldText: string, newText: string, fileStartLine: number): string {
 	const oldLines = oldText.split("\n");
 	const newLines = newText.split("\n");
-	const maxLineNum = Math.max(oldLines.length, newLines.length);
+	const maxLineNum = fileStartLine - 1 + Math.max(oldLines.length, newLines.length);
 	const lineNumWidth = String(maxLineNum).length;
 	const padLine = (n: number) => String(n).padStart(lineNumWidth, " ");
 
@@ -236,7 +253,7 @@ function buildDiffPreview(_path: string, oldText: string, newText: string): stri
 	// Render with context hunks
 	const contextLines = 3;
 	const output: string[] = [];
-	let oldNum = 1, newNum = 1;
+	let oldNum = fileStartLine, newNum = fileStartLine;
 	let idx = 0;
 
 	while (idx < ops.length) {
@@ -253,7 +270,7 @@ function buildDiffPreview(_path: string, oldText: string, newText: string): stri
 		hunkEnd = Math.min(ops.length, hunkEnd + contextLines);
 
 		// Compute line numbers at hunkStart
-		let oNum = 1, nNum = 1;
+		let oNum = fileStartLine, nNum = fileStartLine;
 		for (let k = 0; k < hunkStart; k++) {
 			if (ops[k].type !== "add") oNum++;
 			if (ops[k].type !== "del") nNum++;
@@ -386,12 +403,10 @@ export default function (pi: ExtensionAPI) {
 			const filePath = (params.path as string) || "";
 			const oldText = (params.oldText as string) || "";
 			const newText = (params.newText as string) || "";
-			const diffText = buildDiffPreview(filePath, oldText, newText);
 
 			const result = await executeProposal(ctx, {
 				path: filePath,
 				reason: params.reason as string | undefined,
-				diff: diffText,
 			});
 
 			if (result.details.approved) {
@@ -423,10 +438,14 @@ export default function (pi: ExtensionAPI) {
 			const path = theme.fg("accent", args.path as string);
 			const reason = args.reason ? theme.fg("dim", ` (${args.reason})`) : "";
 			let text = theme.fg("toolTitle", theme.bold("thil_propose_diff ")) + path + reason + "\n";
-			const preview = buildDiffPreview(
+			const fileStartLine = findLineOffset(
 				(args.path as string) || "",
 				(args.oldText as string) || "",
+			);
+			const preview = buildDiffPreview(
+				(args.oldText as string) || "",
 				(args.newText as string) || "",
+				fileStartLine,
 			);
 			const colored = preview.split("\n").map((line) => {
 				if (line.startsWith("+")) return theme.fg("toolDiffAdded", line);
