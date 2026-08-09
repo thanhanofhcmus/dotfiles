@@ -29,6 +29,7 @@ import { readFile, writeFile } from "node:fs/promises";
 interface ToolResult {
 	content: AgentToolResult<unknown>["content"];
 	details: Record<string, unknown>;
+	terminate: boolean;
 }
 
 interface ProposalDetails {
@@ -136,6 +137,7 @@ async function executeProposal(
 			return {
 				content: [{ type: "text", text: "User cancelled." }],
 				details: { ...details, approved: false } satisfies ProposalDetails,
+				terminate: false,
 			};
 		}
 
@@ -143,6 +145,7 @@ async function executeProposal(
 			return {
 				content: [{ type: "text", text: "Rejected." }],
 				details: { ...details, approved: false } satisfies ProposalDetails,
+				terminate: true,
 			};
 		}
 
@@ -152,6 +155,7 @@ async function executeProposal(
 				return {
 					content: [{ type: "text", text: "User cancelled." }],
 					details: { ...details, approved: false } satisfies ProposalDetails,
+					terminate: false,
 				};
 			}
 			if (fb.back) {
@@ -170,6 +174,7 @@ async function executeProposal(
 					approved: false,
 					feedback: fb.feedback,
 				} satisfies ProposalDetails,
+				terminate: false,
 			};
 		}
 
@@ -177,6 +182,7 @@ async function executeProposal(
 		return {
 			content: [{ type: "text", text: "Approved." }],
 			details: { ...details, approved: true } satisfies ProposalDetails,
+			terminate: false,
 		};
 	}
 }
