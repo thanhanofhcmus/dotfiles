@@ -60,12 +60,12 @@ async function showApprovalUI(
 	// Use ctx.ui.select for simplicity and reliability
 	const choice = await ctx.ui.select(
 		"THIL — Review proposal",
-		["◉ Accept", "○ Reject", "◎ Reject + feedback"],
+		["▶ Accept", "✗ Reject", "↩ Reject + feedback"],
 	);
 
-	if (choice === "◉ Accept") return "approve";
-	if (choice === "○ Reject") return "reject";
-	if (choice === "◎ Reject + feedback") return "feedback";
+	if (choice === "▶ Accept") return "approve";
+	if (choice === "✗ Reject") return "reject";
+	if (choice === "↩ Reject + feedback") return "feedback";
 	return null; // cancelled
 }
 
