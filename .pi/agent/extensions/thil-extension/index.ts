@@ -32,17 +32,40 @@ interface ToolResult {
 	terminate: boolean;
 }
 
-interface ProposalDetails {
-	path: string;
-	reason?: string;
-	diff?: string;
-	code?: string;
-	command?: string;
+/** Outcome of the approval UI — added by executeProposal to any input */
+interface ApprovalOutcome {
 	approved: boolean;
 	feedback?: string;
 }
 
-type Action = "approve" | "reject" | "feedback";
+// Per-tool proposal types
+
+interface DiffProposalInput {
+	path: string;
+	reason?: string;
+}
+
+interface DiffProposalResult extends DiffProposalInput, ApprovalOutcome {
+	applied?: boolean;
+}
+
+interface NewProposalInput {
+	path: string;
+	reason?: string;
+	code: string;
+}
+
+interface NewProposalResult extends NewProposalInput, ApprovalOutcome {
+	applied?: boolean;
+}
+
+interface VerifyProposalInput {
+	command: string;
+}
+
+interface VerifyProposalResult extends VerifyProposalInput, ApprovalOutcome {}
+
+type Action = "approve" | "reject" | "feedback" | "cancel";
 
 // Helper to extract ExtensionContext type from the API
 type ExtCtx = Parameters<
@@ -55,8 +78,8 @@ type ExtCtx = Parameters<
 
 async function showApprovalUI(
 	ctx: ExtCtx,
-): Promise<Action | null> {
-	if (!ctx.hasUI) return null;
+): Promise<Action> {
+	if (!ctx.hasUI) return "cancel";
 
 	// Use ctx.ui.select for simplicity and reliability
 	const choice = await ctx.ui.select(
@@ -67,17 +90,22 @@ async function showApprovalUI(
 	if (choice === "▶ Accept") return "approve";
 	if (choice === "✗ Reject") return "reject";
 	if (choice === "↩ Reject + feedback") return "feedback";
-	return null; // cancelled
+	return "cancel";
 }
 
 // ---------------------------------------------------------------------------
 // Feedback UI (simple text input → returns feedback string)
 // ---------------------------------------------------------------------------
 
-async function showFeedbackUI(ctx: ExtCtx): Promise<{ feedback: string; back: boolean } | null> {
-	if (ctx.mode !== "tui") return null;
+type FeedbackResult =
+	| { outcome: "submitted"; feedback: string }
+	| { outcome: "back" }
+	| { outcome: "unavailable" };
 
-	return ctx.ui.custom<{ feedback: string; back: boolean } | null>((tui, theme, _kb, done) => {
+async function showFeedbackUI(ctx: ExtCtx): Promise<FeedbackResult> {
+	if (ctx.mode !== "tui") return { outcome: "unavailable" };
+
+	return ctx.ui.custom<FeedbackResult>((tui, theme, _kb, done) => {
 		const editorTheme: EditorTheme = {
 			borderColor: (s) => theme.fg("accent", s),
 			selectList: {
@@ -89,7 +117,7 @@ async function showFeedbackUI(ctx: ExtCtx): Promise<{ feedback: string; back: bo
 			},
 		};
 		const editor = new Editor(tui, editorTheme);
-		editor.onSubmit = (value) => done({ feedback: value.trim(), back: false });
+		editor.onSubmit = (value) => done({ outcome: "submitted", feedback: value.trim() });
 
 		const title = new Text(theme.fg("accent", theme.bold("THIL — Rejected with feedback")), 1, 0);
 		const hint = new Text(theme.fg("dim", "Type feedback, Enter to reject."), 1, 0);
@@ -112,7 +140,7 @@ async function showFeedbackUI(ctx: ExtCtx): Promise<{ feedback: string; back: bo
 			invalidate: () => editor.invalidate(),
 			handleInput: (data: string) => {
 				if (matchesKey(data, Key.escape)) {
-					done({ feedback: "", back: true });
+					done({ outcome: "back" });
 					return;
 				}
 				editor.handleInput(data);
@@ -126,17 +154,17 @@ async function showFeedbackUI(ctx: ExtCtx): Promise<{ feedback: string; back: bo
 // Common proposal execution logic
 // ---------------------------------------------------------------------------
 
-async function executeProposal(
+async function executeProposal<T extends Record<string, unknown>>(
 	ctx: ExtCtx,
-	details: Omit<ProposalDetails, "approved" | "feedback">,
+	input: T,
 ): Promise<ToolResult> {
 	while (true) {
 		const action = await showApprovalUI(ctx);
 
-		if (action === null) {
+		if (action === "cancel") {
 			return {
 				content: [{ type: "text", text: "User cancelled." }],
-				details: { ...details, approved: false } satisfies ProposalDetails,
+				details: { ...input, approved: false } as T & ApprovalOutcome,
 				terminate: false,
 			};
 		}
@@ -144,22 +172,21 @@ async function executeProposal(
 		if (action === "reject") {
 			return {
 				content: [{ type: "text", text: "Rejected." }],
-				details: { ...details, approved: false } satisfies ProposalDetails,
+				details: { ...input, approved: false } as T & ApprovalOutcome,
 				terminate: true,
 			};
 		}
 
 		if (action === "feedback") {
 			const fb = await showFeedbackUI(ctx);
-			if (fb === null) {
+			if (fb.outcome === "unavailable") {
 				return {
 					content: [{ type: "text", text: "User cancelled." }],
-					details: { ...details, approved: false } satisfies ProposalDetails,
+					details: { ...input, approved: false } as T & ApprovalOutcome,
 					terminate: false,
 				};
 			}
-			if (fb.back) {
-				// Esc in feedback editor — loop back to approval menu
+			if (fb.outcome === "back") {
 				continue;
 			}
 			return {
@@ -170,10 +197,10 @@ async function executeProposal(
 					},
 				],
 				details: {
-					...details,
+					...input,
 					approved: false,
 					feedback: fb.feedback,
-				} satisfies ProposalDetails,
+				} as T & ApprovalOutcome,
 				terminate: false,
 			};
 		}
@@ -181,7 +208,7 @@ async function executeProposal(
 		// Plain approve
 		return {
 			content: [{ type: "text", text: "Approved." }],
-			details: { ...details, approved: true } satisfies ProposalDetails,
+			details: { ...input, approved: true } as T & ApprovalOutcome,
 			terminate: false,
 		};
 	}
@@ -191,8 +218,8 @@ function renderProposalResult(
 	result: ToolResult,
 	theme: Theme,
 ) {
-	const d = result.details as unknown as ProposalDetails | undefined;
-	if (!d || !d.path) return new Text(theme.fg("warning", "?"), 0, 0);
+	const d = result.details as ApprovalOutcome & { path?: string };
+	if (!d.path) return new Text(theme.fg("warning", "?"), 0, 0);
 	const path = theme.fg("accent", d.path);
 	const fb = d.feedback ? theme.fg("dim", d.approved ? ` (${d.feedback})` : ` — ${d.feedback}`) : "";
 	const status = d.approved
@@ -414,7 +441,7 @@ export default function (pi: ExtensionAPI) {
 			const oldText = (params.oldText as string) || "";
 			const newText = (params.newText as string) || "";
 
-			const result = await executeProposal(ctx, {
+			const result = await executeProposal<DiffProposalInput>(ctx, {
 				path: filePath,
 				reason: params.reason as string | undefined,
 			});
@@ -470,15 +497,14 @@ export default function (pi: ExtensionAPI) {
 		},
 
 		renderResult(result, _options, theme, context) {
-			const d = result.details as unknown as ProposalDetails & { applied?: boolean } | undefined;
-			if (!d) return new Text(theme.fg("warning", "?"), 0, 0);
+			const d = result.details as DiffProposalResult;
 			if (d.applied) {
 				const text = `\n${theme.fg("success", "▶ applied ")}${theme.fg("accent", d.path)}`;
 				const component = (context.lastComponent as unknown as Text | undefined) ?? new Text("", 0, 0);
 				component.setText(text);
 				return component;
 			}
-			return renderProposalResult(result as unknown as ToolResult, theme);
+			return renderProposalResult(result, theme);
 		},
 	});
 
@@ -498,7 +524,7 @@ export default function (pi: ExtensionAPI) {
 		executionMode: "sequential",
 
 		async execute(_id, params, _signal, _onUpdate, ctx) {
-			const result = await executeProposal(ctx, {
+			const result = await executeProposal<NewProposalInput>(ctx, {
 				path: params.path,
 				reason: params.reason,
 				code: params.code,
@@ -536,15 +562,14 @@ export default function (pi: ExtensionAPI) {
 		},
 
 		renderResult(result, _options, theme, context) {
-			const d = result.details as unknown as ProposalDetails & { applied?: boolean } | undefined;
-			if (!d) return new Text(theme.fg("warning", "?"), 0, 0);
+			const d = result.details as NewProposalResult;
 			if (d.applied) {
 				const text = `\n${theme.fg("success", "▶ written ")}${theme.fg("accent", d.path)}`;
 				const component = (context.lastComponent as unknown as Text | undefined) ?? new Text("", 0, 0);
 				component.setText(text);
 				return component;
 			}
-			return renderProposalResult(result as unknown as ToolResult, theme);
+			return renderProposalResult(result, theme);
 		},
 	});
 
@@ -568,8 +593,7 @@ export default function (pi: ExtensionAPI) {
 		executionMode: "sequential",
 
 		async execute(_id, params, _signal, _onUpdate, ctx) {
-			const result = await executeProposal(ctx, {
-				path: params.command,
+			const result = await executeProposal<VerifyProposalInput>(ctx, {
 				command: params.command,
 			});
 
@@ -593,8 +617,7 @@ export default function (pi: ExtensionAPI) {
 		},
 
 		renderResult(result, _options, theme, _context) {
-			const d = result.details as unknown as ProposalDetails | undefined;
-			if (!d) return new Text(theme.fg("warning", "?"), 0, 0);
+			const d = result.details as VerifyProposalResult;
 			const fb = d.feedback ? theme.fg("dim", d.approved ? ` (${d.feedback})` : ` — ${d.feedback}`) : "";
 			const status = d.approved
 				? theme.fg("success", "▶ verify approved")
