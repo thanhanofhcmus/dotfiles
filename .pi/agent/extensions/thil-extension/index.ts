@@ -4,10 +4,10 @@
  * Enforces a strict propose→approve→execute workflow:
  * - thil_propose_diff: show a diff to existing code, get user approval
  * - thil_propose_new: show new function/file code, get user approval
- * - thil_verify: propose verification command, get user approval before running
  *
- * Hard enforcement: edit/write/bash(test) are blocked unless preceded by
- * the corresponding thil_* proposal tool in the same turn.
+ * Hard enforcement: edit/write are always blocked. Bash commands that are
+ * destructive, expensive, cheating, or sensitive require explicit approval.
+ * All other bash commands pass through freely.
  */
 
 import { type ExtensionAPI, type AgentToolResult, Theme } from "@earendil-works/pi-coding-agent";
@@ -21,6 +21,7 @@ import {
 import { Type } from "typebox";
 import { readFileSync } from "node:fs";
 import { readFile, writeFile } from "node:fs/promises";
+import dangerousPatterns from "./dangerous-commands.json" with { type: "json" };
 
 // ---------------------------------------------------------------------------
 // Shared types
@@ -58,12 +59,6 @@ interface NewProposalInput {
 interface NewProposalResult extends NewProposalInput, ApprovalOutcome {
 	applied?: boolean;
 }
-
-interface VerifyProposalInput {
-	command: string;
-}
-
-interface VerifyProposalResult extends VerifyProposalInput, ApprovalOutcome {}
 
 type Action = "approve" | "reject" | "feedback" | "cancel";
 
@@ -337,47 +332,46 @@ function buildDiffPreview(oldText: string, newText: string, fileStartLine: numbe
 
 
 // ---------------------------------------------------------------------------
-// State: track proposal → edit/write approval
+// State
 // ---------------------------------------------------------------------------
 
-let verifyApproved = false;
 let thilEnabled = false;
 
 function resetAllState() {
-	verifyApproved = false;
+	// reserved for future state
 }
 
 // ---------------------------------------------------------------------------
-// Test command detection
+// Dangerous command classifier (static blacklist)
 // ---------------------------------------------------------------------------
 
-function isTestCommand(cmd: string): boolean {
-	const lower = cmd.toLowerCase();
-	const testPatterns = [
-		/\bnpm\s+test\b/,
-		/\bnpm\s+run\s+test\b/,
-		/\bnpx?\s+(jest|vitest|mocha|ava|playwright|cypress)\b/,
-		/\byarn\s+test\b/,
-		/\bbun\s+test\b/,
-		/\bpytest\b/,
-		/\bpython\s+-m\s+pytest\b/,
-		/\bcargo\s+test\b/,
-		/\bgo\s+test\b/,
-		/\bmake\s+test\b/,
-		/\bctest\b/,
-		/\bjust\s+test\b/,
-		/\bdotnet\s+test\b/,
-		/\bgradle\s+test\b/,
-		/\bmvn\s+test\b/,
-		/\bsbt\s+test\b/,
-		/\bmix\s+test\b/,
-		/\biex\s+.*test/,
-		/\brebar3?\s+(eunit|ct)\b/,
-		/\bstack\s+test\b/,
-		/\bcabal\s+test\b/,
-		/\bzig\s+build\s+test\b/,
-	];
-	return testPatterns.some((p) => p.test(lower));
+type DangerCategory = "destructive" | "expensive" | "cheating" | "sensitive";
+
+const compiledPatterns: Record<DangerCategory, RegExp[]> = {
+	destructive: [],
+	expensive: [],
+	cheating: [],
+	sensitive: [],
+};
+
+for (const cat of Object.keys(dangerousPatterns) as DangerCategory[]) {
+	compiledPatterns[cat] = (dangerousPatterns[cat] as string[]).map((p) => new RegExp(p, "i"));
+}
+
+interface CommandVerdict {
+	dangerous: boolean;
+	category?: DangerCategory;
+}
+
+function classifyCommand(cmd: string): CommandVerdict {
+	for (const cat of Object.keys(compiledPatterns) as DangerCategory[]) {
+		for (const re of compiledPatterns[cat]) {
+			if (re.test(cmd)) {
+				return { dangerous: true, category: cat };
+			}
+		}
+	}
+	return { dangerous: false };
 }
 
 // ---------------------------------------------------------------------------
@@ -385,11 +379,15 @@ function isTestCommand(cmd: string): boolean {
 // ---------------------------------------------------------------------------
 
 export default function (pi: ExtensionAPI) {
-	// ── Hard enforcement: block all edit/write when THIL is on ──────────
-	// The thil_propose_diff and thil_propose_new tools perform the
-	// actual edits/writes themselves after user approval.
+	// ── Hard enforcement: block edit/write, gate dangerous bash ────────
+	// Returning undefined from this handler means "allow the tool call to proceed".
+	// Returning { block: true } means "stop the tool call with this reason".
+	//
+	// edit/write: always blocked, agent must use thil_propose_* tools instead.
+	// bash: only blocked if the command matches destructive/expensive/cheating/sensitive
+	//       patterns AND the user rejects the approval dialog.
 	pi.on("tool_call", async (event, ctx) => {
-		if (!thilEnabled) return undefined;
+		if (!thilEnabled) return; // THIL off → allow everything
 
 		if (event.toolName === "edit") {
 			return {
@@ -407,17 +405,36 @@ export default function (pi: ExtensionAPI) {
 
 		if (event.toolName === "bash") {
 			const cmd = (event.input as { command?: string }).command ?? "";
-			if (isTestCommand(cmd) && !verifyApproved) {
-				return {
-					block: true,
-					reason: "THIL: test command blocked. Use thil_verify first to propose verification.",
-				};
+			const verdict = classifyCommand(cmd);
+
+			if (!verdict.dangerous) return; // safe command → allow
+
+			// Dangerous command → ask user for approval
+			const action = await showApprovalUI(ctx);
+
+			if (action === "approve") return; // user approved → allow
+
+			// User rejected — block the command and stop the agent turn
+			if (action === "feedback") {
+				const fb = await showFeedbackUI(ctx);
+				if (fb.outcome === "submitted") {
+					return {
+						block: true,
+						reason: `THIL: ${verdict.category} bash command rejected with feedback: ${fb.feedback || "(none)"}`,
+						terminate: true,
+					};
+				}
+				// back or unavailable → treat as plain reject
 			}
-			if (isTestCommand(cmd)) verifyApproved = false;
-			return undefined;
+
+			return {
+				block: true,
+				reason: `THIL: ${verdict.category} bash command blocked by user.`,
+				terminate: true,
+			};
 		}
 
-		return undefined;
+		return; // allow any other tool
 	});
 
 	// ── Tool: thil_propose_diff ─────────────────────────────────────────
@@ -573,62 +590,9 @@ export default function (pi: ExtensionAPI) {
 		},
 	});
 
-	// ── Tool: thil_verify ───────────────────────────────────────────────
-	pi.registerTool({
-		name: "thil_verify",
-		label: "THIL Verify",
-		description:
-			"Propose a verification command (tests, lint, build) for user approval before running. REQUIRED before running test commands.",
-		parameters: Type.Object({
-			command: Type.String({
-				description: "The verification command to run",
-			}),
-			reason: Type.Optional(
-				Type.String({
-					description:
-						"Which task/change is being verified. Omit if obvious.",
-				}),
-			),
-		}),
-		executionMode: "sequential",
-
-		async execute(_id, params, _signal, _onUpdate, ctx) {
-			const result = await executeProposal<VerifyProposalInput>(ctx, {
-				command: params.command,
-			});
-
-			if (result.details.approved) {
-				verifyApproved = true;
-				return {
-					content: [{ type: "text", text: `Approved. You may now run: ${params.command}` }],
-					details: { ...result.details, approved: true },
-				};
-			}
-			return result;
-		},
-
-		renderCall(args, theme, _context) {
-			return new Text(
-				theme.fg("toolTitle", theme.bold("thil_verify ")) +
-					(args.command as string),
-				0,
-				0,
-			);
-		},
-
-		renderResult(result, _options, theme, _context) {
-			const d = result.details as VerifyProposalResult;
-			const fb = d.feedback ? theme.fg("dim", d.approved ? ` (${d.feedback})` : ` — ${d.feedback}`) : "";
-			const status = d.approved
-				? theme.fg("success", "▶ verify approved")
-				: theme.fg("warning", "✗ verify rejected");
-			return new Text(`\n${status}${fb}`, 0, 0);
-		},
-	});
-
 	// ── THIL on/off toggle ─────────────────────────────────────────────
 	pi.registerCommand("thil:on", {
-		description: "Enable THIL enforcement (edit/write/test gates)",
+		description: "Enable THIL enforcement (edit/write gates, dangerous bash approval)",
 		async handler(_args, ctx) {
 			thilEnabled = true;
 			ctx.ui.notify("THIL: gates enabled", "info");
@@ -655,7 +619,7 @@ export default function (pi: ExtensionAPI) {
 		async execute() {
 			thilEnabled = true;
 			return {
-				content: [{ type: "text", text: "THIL gates enabled. edit/write/test commands now require proposal approval." }],
+				content: [{ type: "text", text: "THIL gates enabled. edit/write are blocked. Dangerous bash commands require approval." }],
 				details: { enabled: true },
 			};
 		},
@@ -672,7 +636,7 @@ export default function (pi: ExtensionAPI) {
 			thilEnabled = false;
 			resetAllState();
 			return {
-				content: [{ type: "text", text: "THIL gates disabled. edit/write/test commands are free again." }],
+				content: [{ type: "text", text: "THIL gates disabled. All tools are free again." }],
 				details: { enabled: false },
 			};
 		},

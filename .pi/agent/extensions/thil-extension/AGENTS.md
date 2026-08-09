@@ -17,10 +17,10 @@ Tool: thil_propose_diff   — proposes edits to existing files
 Tool: thil_propose_new    — proposes creating new files
 Tool: thil_propose_enable / thil_disable  — toggles
 
-tool_call event handler   — blocks edit/write/test bash when THIL is on
+tool_call event handler   — blocks edit/write, gates dangerous bash when THIL is on
 ```
 
-**State:** Two module-level variables — `thilEnabled` (boolean) and `verifyApproved` (boolean, reset after use). No session persistence.
+**State:** One module-level variable — `thilEnabled` (boolean). No session persistence. Dangerous command patterns live in `dangerous-commands.json`.
 
 ## Key Patterns
 
@@ -83,16 +83,20 @@ The `tool_call` event handler runs first in the pipeline. When THIL is on:
 |------|----------|
 | `edit` | Blocked. Use `thil_propose_diff`. |
 | `write` | Blocked. Use `thil_propose_new`. |
-| `bash` (test commands) | Blocked unless `verifyApproved` is true. Use `thil_verify` first. |
-| `bash` (non-test) | Allowed. |
+| `bash` (dangerous) | Trigger approval dialog. If rejected, blocked with `terminate: true`. |
+| `bash` (safe) | Allowed freely. |
 
-Test commands are detected via `isTestCommand()` which matches patterns like `npm test`, `cargo test`, `go test`, `pytest`, etc.
+Dangerous commands are detected via static blacklist in `dangerous-commands.json` across four categories: destructive, expensive, cheating, sensitive. Each category has regex patterns matched case-insensitively against the command string.
 
 The proposal tools (`thil_propose_diff`, `thil_propose_new`) perform the actual file writes themselves after approval — they don't delegate to `edit`/`write`.
 
 ## Committing
 
-This repo is tracked in the user's dotfiles repo. **Never run `git init`.** Use:
+This repo is tracked in the user's dotfiles repo. **Never run `git init`.**
+
+**Never auto-commit.** Only commit when the user explicitly asks.
+
+When committing, use:
 
 ```bash
 cd /home/an && git --git-dir=$HOME/dev/dotfiles --work-tree=$HOME add .pi/agent/extensions/thil-extension/<file>
