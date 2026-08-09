@@ -36,6 +36,15 @@ autoload -U +X bashcompinit && bashcompinit
 [[ $commands[argocd] ]] && source <(argocd completion zsh)
 [[ $commands[aws]    ]] && complete -C /usr/bin/aws_completer aws
 
+if [[ $commands[lazygit] ]] then
+    alias lzg=lazygit
+fi
+
+if [[ $commands[vagrant] ]]  then
+    fpath=(/opt/vagrant/embedded/gems/gems/vagrant-2.4.9/contrib/zsh $fpath)
+    compinit
+fi
+
 if [[ $commands[eza] ]] then
     alias l='eza --all --long --group-directories-first --binary --icons=auto'
 fi
@@ -69,3 +78,5 @@ if [[ $commands[kubectl] ]]; then
         compdef __start_kubectl k
     fi
 fi
+
+export TERM=xterm-256color
