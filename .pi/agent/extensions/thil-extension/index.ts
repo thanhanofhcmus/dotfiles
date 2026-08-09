@@ -492,16 +492,23 @@ export default function (pi: ExtensionAPI) {
 			const path = theme.fg("accent", args.path as string);
 			const reason = args.reason ? theme.fg("dim", ` (${args.reason})`) : "";
 			let text = theme.fg("toolTitle", theme.bold("thil_propose_diff ")) + path + reason + "\n";
-			const fileStartLine = findLineOffset(
-				(args.path as string) || "",
-				(args.oldText as string) || "",
-			);
-			const preview = buildDiffPreview(
-				(args.oldText as string) || "",
-				(args.newText as string) || "",
-				fileStartLine,
-			);
-			const colored = preview.split("\n").map((line) => {
+			// renderCall is re-invoked on every updateDisplay (args change,
+			// execution start, args complete, result). Cache expensive work so
+			// it only runs once — file I/O and the LCS diff are deterministic
+			// given fixed args, and after execution the file has been modified
+			// so re-reading oldText would fail.
+			if (context.state.diffPreview === undefined) {
+				const fileStartLine = findLineOffset(
+					(args.path as string) || "",
+					(args.oldText as string) || "",
+				);
+				context.state.diffPreview = buildDiffPreview(
+					(args.oldText as string) || "",
+					(args.newText as string) || "",
+					fileStartLine,
+				);
+			}
+			const colored = (context.state.diffPreview as string).split("\n").map((line: string) => {
 				if (line.startsWith("+")) return theme.fg("toolDiffAdded", line);
 				if (line.startsWith("-")) return theme.fg("toolDiffRemoved", line);
 				if (line.startsWith(" ")) return theme.fg("toolDiffContext", line);
