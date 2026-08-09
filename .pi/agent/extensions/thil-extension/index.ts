@@ -221,12 +221,16 @@ function findLineOffset(filePath: string, text: string): number {
 	}
 }
 
+function lineNumberFormatter(totalLines: number, startLine: number = 1): (n: number) => string {
+	const maxLineNum = startLine - 1 + totalLines;
+	const width = String(maxLineNum).length;
+	return (n: number) => String(n).padStart(width, " ");
+}
+
 function buildDiffPreview(oldText: string, newText: string, fileStartLine: number): string {
 	const oldLines = oldText.split("\n");
 	const newLines = newText.split("\n");
-	const maxLineNum = fileStartLine - 1 + Math.max(oldLines.length, newLines.length);
-	const lineNumWidth = String(maxLineNum).length;
-	const padLine = (n: number) => String(n).padStart(lineNumWidth, " ");
+	const padLine = lineNumberFormatter(Math.max(oldLines.length, newLines.length), fileStartLine);
 
 	// Compute LCS-based edit script
 	const m = oldLines.length, n = newLines.length;
@@ -522,7 +526,9 @@ export default function (pi: ExtensionAPI) {
 			const reason = args.reason ? theme.fg("dim", ` (${args.reason})`) : "";
 			let text = theme.fg("toolTitle", theme.bold("thil_propose_new ")) + path + reason + "\n";
 			const code = (args.code as string) || "";
-			const colored = code.split("\n").map((line) => theme.fg("toolDiffAdded", `+${line}`));
+			const lines = code.split("\n");
+			const padLine = lineNumberFormatter(lines.length, 1);
+			const colored = lines.map((line, i) => theme.fg("toolDiffAdded", `+${padLine(i + 1)} ${line}`));
 			text += colored.join("\n");
 			const component = (context.lastComponent as Text | undefined) ?? new Text("", 0, 0);
 			component.setText(text);
