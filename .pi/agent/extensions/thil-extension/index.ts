@@ -493,22 +493,29 @@ export default function (pi: ExtensionAPI) {
 			const reason = args.reason ? theme.fg("dim", ` (${args.reason})`) : "";
 			let text = theme.fg("toolTitle", theme.bold("thil_propose_diff ")) + path + reason + "\n";
 			// renderCall is re-invoked on every updateDisplay (args change,
-			// execution start, args complete, result). Cache expensive work so
-			// it only runs once — file I/O and the LCS diff are deterministic
-			// given fixed args, and after execution the file has been modified
-			// so re-reading oldText would fail.
-			if (context.state.diffPreview === undefined) {
-				const fileStartLine = findLineOffset(
+			// execution start, args complete, result). Only the file read is
+			// expensive — cache just the line offset. buildDiffPreview is
+			// pure in-memory work; recomputing it is cheap and safe even
+			// after the file has been modified by execute.
+			// Key on a hash of oldText so the cache is per unique proposal.
+			const oldText = (args.oldText as string) || "";
+			let hash = 0;
+			for (let i = 0; i < oldText.length; i++) {
+				hash = (Math.imul(hash, 31) + oldText.charCodeAt(i)) | 0;
+			}
+			const cacheKey = `ls:${hash}`;
+			if (context.state[cacheKey] === undefined) {
+				context.state[cacheKey] = findLineOffset(
 					(args.path as string) || "",
-					(args.oldText as string) || "",
-				);
-				context.state.diffPreview = buildDiffPreview(
-					(args.oldText as string) || "",
-					(args.newText as string) || "",
-					fileStartLine,
+					oldText,
 				);
 			}
-			const colored = (context.state.diffPreview as string).split("\n").map((line: string) => {
+			const preview = buildDiffPreview(
+				oldText,
+				(args.newText as string) || "",
+				context.state[cacheKey] as number,
+			);
+			const colored = preview.split("\n").map((line) => {
 				if (line.startsWith("+")) return theme.fg("toolDiffAdded", line);
 				if (line.startsWith("-")) return theme.fg("toolDiffRemoved", line);
 				if (line.startsWith(" ")) return theme.fg("toolDiffContext", line);

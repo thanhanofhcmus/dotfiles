@@ -1,0 +1,12 @@
+{
+  "name": "pi-extensions",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@earendil-works/pi-coding-agent": "file:/home/an/.bun/install/global/node_modules/@earendil-works/pi-coding-agent",
+    "@earendil-works/pi-tui": "file:/home/an/.bun/install/global/node_modules/@earendil-works/pi-tui",
+    "@earendil-works/pi-ai": "file:/home/an/.bun/install/global/node_modules/@earendil-works/pi-ai",
+    "typebox": "file:/home/an/.bun/install/global/node_modules/typebox",
+    "@types/node": "file:/home/an/.bun/install/global/node_modules/@types/node"
+  }
+}
