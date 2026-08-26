@@ -1,0 +1,16 @@
+k9s:
+  refreshRate: 2
+  ui:
+    logoless: true
+    crumbsless: true
+    noIcons: true
+    splashless: true
+    reactive: true
+    defaultsToFullScreen: false
+  thresholds:
+    cpu:
+      critical: 90
+      warn: 70
+    memory:
+      critical: 90
+      warn: 70
