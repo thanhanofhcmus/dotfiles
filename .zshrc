@@ -54,6 +54,14 @@ if [[ $commands[terraform] ]] then
     complete -o nospace -C /usr/bin/terraform terraform
 fi
 
+if [[ $commands[nvim] ]]; then
+    alias v=nvim
+elif [[ $commands[vim] ]]; then
+    alias v=vim
+elif [[ $commands[vi] ]]; then
+    alias v=vi
+fi
+
 if [[ $commands[kubectl] ]]; then
     source <(kubectl completion zsh)
     kdo=(--dry-run=client -o=yaml)
