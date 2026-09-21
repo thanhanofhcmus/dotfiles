@@ -1,10 +1,15 @@
-theme = light:Nvim Light,dark:Nvim Dark
-
+theme = dark:Kitty Default, light:Builtin Light
 font-size = 14
 
 window-inherit-working-directory = false
+
+tab-inherit-working-directory = false
+
 working-directory = home
 
 cursor-style = block
 cursor-style-blink = false
 shell-integration-features = no-cursor
+
+gtk-titlebar = true
+gtk-titlebar-style = tabs
