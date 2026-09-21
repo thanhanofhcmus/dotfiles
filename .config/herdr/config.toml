@@ -1,3 +1,4 @@
+onboarding = false
 [keys]
 # Split into left/right panes (vertical divider)
 split_vertical = "prefix+|"
