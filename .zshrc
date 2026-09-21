@@ -36,6 +36,10 @@ autoload -U +X bashcompinit && bashcompinit
 [[ $commands[argocd] ]] && source <(argocd completion zsh)
 [[ $commands[aws]    ]] && complete -C /usr/bin/aws_completer aws
 
+if [[ $commands[mdfried] ]] then
+    alias md=mdfried
+fi
+
 if [[ $commands[lazygit] ]] then
     alias lzg=lazygit
 fi
