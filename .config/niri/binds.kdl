@@ -1,0 +1,145 @@
+// Keybindings. Kept separate from config.kdl for manageability.
+
+binds {
+    Mod+Shift+Slash { show-hotkey-overlay; }
+
+    Mod+Return hotkey-overlay-title="Open a Terminal" { spawn "kitty"; }
+    Mod+Shift+Return hotkey-overlay-title="Open a floating Terminal" { spawn "kitty" "--class" "kitty-floating"; }
+    // Mod+Return hotkey-overlay-title="Open a Terminal" { spawn "ghostty"; }
+
+
+    Mod+E hotkey-overlay-title="Open Files" { spawn "nautilus"; }
+
+    Mod+Shift+S hotkey-overlay-title="Screenshot Region" { spawn "noctalia" "msg" "screenshot-region"; }
+    Mod+Shift+A hotkey-overlay-title="Screenshot and Annotate" { spawn "noctalia" "msg" "screenshot-annotate"; }
+
+
+    Mod+Shift+Alt+M hotkey-overlay-title="Quit niri" { quit; }
+
+    XF86AudioRaiseVolume hotkey-overlay-title="Volume Up"   allow-when-locked=true { spawn "noctalia" "msg" "volume-up" "2"; }
+    XF86AudioLowerVolume hotkey-overlay-title="Volume Down" allow-when-locked=true { spawn "noctalia" "msg" "volume-down" "2"; }
+    XF86AudioMute        hotkey-overlay-title="Mute"        allow-when-locked=true { spawn "noctalia" "msg" "volume-mute"; }
+    XF86AudioMicMute     hotkey-overlay-title="Mute Microphone" allow-when-locked=true { spawn "noctalia" "msg" "mic-mute"; }
+
+    XF86MonBrightnessUp   hotkey-overlay-title="Brightness Up"   allow-when-locked=true { spawn "noctalia" "msg" "brightness-up"; }
+    XF86MonBrightnessDown hotkey-overlay-title="Brightness Down" allow-when-locked=true { spawn "noctalia" "msg" "brightness-down"; }
+
+    XF86AudioPlay hotkey-overlay-title="Play/Pause"    allow-when-locked=true { spawn "noctalia" "msg" "media" "toggle"; }
+    XF86AudioStop hotkey-overlay-title="Stop"           allow-when-locked=true { spawn "noctalia" "msg" "media" "stop"; }
+    XF86AudioPrev hotkey-overlay-title="Previous Track" allow-when-locked=true { spawn "noctalia" "msg" "media" "previous"; }
+    XF86AudioNext hotkey-overlay-title="Next Track"     allow-when-locked=true { spawn "noctalia" "msg" "media" "next"; }
+
+
+    // Core Noctalia binds
+    Mod+Shift+D     hotkey-overlay-title="Open Launcher"  { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
+    Mod+Shift+V     hotkey-overlay-title="Open Clipboard" { spawn "noctalia" "msg" "panel-toggle" "clipboard"; }
+    Mod+Shift+Alt+L hotkey-overlay-title="Lock Screen"    { spawn "noctalia" "msg" "session" "lock"; }
+
+    Mod+O repeat=false { toggle-overview; }
+
+    Mod+Q repeat=false { close-window; }
+
+    Mod+Left  { focus-column-left; }
+    Mod+H     { focus-column-left; }
+    Mod+Right { focus-column-right; }
+    Mod+L     { focus-column-right; }
+    Mod+Down  { focus-window-or-workspace-down; }
+    Mod+J     { focus-window-or-workspace-down; }
+    Mod+Up    { focus-window-or-workspace-up; }
+    Mod+K     { focus-window-or-workspace-up; }
+
+    Mod+Shift+Left  { move-column-left; }
+    Mod+Shift+H     { move-column-left; }
+    Mod+Shift+Right { move-column-right; }
+    Mod+Shift+L     { move-column-right; }
+    Mod+Shift+Down  { move-window-down-or-to-workspace-down; }
+    Mod+Shift+J     { move-window-down-or-to-workspace-down; }
+    Mod+Shift+Up    { move-window-up-or-to-workspace-up; }
+    Mod+Shift+K     { move-window-up-or-to-workspace-up; }
+
+    Mod+Ctrl+Left  { focus-monitor-left; }
+    Mod+Ctrl+Down  { focus-monitor-down; }
+    Mod+Ctrl+Up    { focus-monitor-up; }
+    Mod+Ctrl+Right { focus-monitor-right; }
+    Mod+Ctrl+H     { focus-monitor-left; }
+    Mod+Ctrl+J     { focus-monitor-down; }
+    Mod+Ctrl+K     { focus-monitor-up; }
+    Mod+Ctrl+L     { focus-monitor-right; }
+
+    Mod+WheelScrollDown      cooldown-ms=150 { focus-workspace-down; }
+    Mod+WheelScrollUp        cooldown-ms=150 { focus-workspace-up; }
+    Mod+Ctrl+WheelScrollDown cooldown-ms=150 { move-column-to-workspace-down; }
+    Mod+Ctrl+WheelScrollUp   cooldown-ms=150 { move-column-to-workspace-up; }
+
+    Mod+WheelScrollRight      { focus-column-right; }
+    Mod+WheelScrollLeft       { focus-column-left; }
+    Mod+Ctrl+WheelScrollRight { move-column-right; }
+    Mod+Ctrl+WheelScrollLeft  { move-column-left; }
+
+    // Usually scrolling up and down with Shift in applications results in
+    // horizontal scrolling; these binds replicate that.
+    Mod+Shift+WheelScrollDown      { focus-column-right; }
+    Mod+Shift+WheelScrollUp        { focus-column-left; }
+    Mod+Ctrl+Shift+WheelScrollDown { move-column-right; }
+    Mod+Ctrl+Shift+WheelScrollUp   { move-column-left; }
+
+    Mod+1 { focus-workspace 1; }
+    Mod+2 { focus-workspace 2; }
+    Mod+3 { focus-workspace 3; }
+    Mod+4 { focus-workspace 4; }
+    Mod+5 { focus-workspace 5; }
+    Mod+6 { focus-workspace 6; }
+    Mod+7 { focus-workspace 7; }
+    Mod+8 { focus-workspace 8; }
+    Mod+9 { focus-workspace 9; }
+    Mod+Shift+1 { move-column-to-workspace 1; }
+    Mod+Shift+2 { move-column-to-workspace 2; }
+    Mod+Shift+3 { move-column-to-workspace 3; }
+    Mod+Shift+4 { move-column-to-workspace 4; }
+    Mod+Shift+5 { move-column-to-workspace 5; }
+    Mod+Shift+6 { move-column-to-workspace 6; }
+    Mod+Shift+7 { move-column-to-workspace 7; }
+    Mod+Shift+8 { move-column-to-workspace 8; }
+    Mod+Shift+9 { move-column-to-workspace 9; }
+
+    Mod+BracketLeft  { consume-or-expel-window-left; }
+    Mod+BracketRight { consume-or-expel-window-right; }
+
+    // Consume one window from the right to the bottom of the focused column.
+    Mod+Comma  { consume-window-into-column; }
+    // Expel the bottom window from the focused column to the right.
+    Mod+Period { expel-window-from-column; }
+
+    Mod+R { switch-preset-column-width; }
+    Mod+Shift+R { switch-preset-window-height; }
+    Mod+Ctrl+R { reset-window-height; }
+    Mod+F { maximize-column; }
+    Mod+Shift+F { fullscreen-window; }
+
+    // Expand the focused column to space not taken up by other fully visible columns.
+    // Makes the column "fill the rest of the space".
+    Mod+Ctrl+F { expand-column-to-available-width; }
+
+    Mod+C { center-column; }
+
+
+    // Center all fully visible columns on screen.
+    Mod+Ctrl+C { center-visible-columns; }
+
+    Mod+Minus { set-column-width "-10%"; }
+    Mod+Equal { set-column-width "+10%"; }
+
+    // Finer height adjustments when in column with other windows.
+    Mod+Shift+Minus { set-window-height "-10%"; }
+    Mod+Shift+Equal { set-window-height "+10%"; }
+
+    // Move the focused window between the floating and the tiling layout.
+    Mod+V       { toggle-window-floating; }
+    // Mod+Shift+V { switch-focus-between-floating-and-tiling; }
+
+    Print hotkey-overlay-title="Screenshot" { screenshot; }
+    Ctrl+Print hotkey-overlay-title="Screenshot Screen" { screenshot-screen; }
+    Alt+Print hotkey-overlay-title="Screenshot Window" { screenshot-window; }
+
+    Mod+Shift+P hotkey-overlay-title="Power Off Monitors" { power-off-monitors; }
+}
