@@ -124,6 +124,11 @@ window-rule {
   default-window-height { fixed 920; }
 }
 
+window-rule {
+    match app-id="mpv"
+    open-floating true
+}
+
 // Open the Firefox picture-in-picture player as floating by default.
 window-rule {
     // This app-id regular expression will work for both:
@@ -295,7 +300,7 @@ layer-rule {
 
 window-rule {
   // Rounded corners for a modern look.
-  geometry-corner-radius 20
+  geometry-corner-radius 4
 
   // Clips window contents to the rounded corner boundaries.
   clip-to-geometry true
@@ -304,7 +309,7 @@ window-rule {
 debug {
   // Allows notification actions and window activation from Noctalia.
     honor-xdg-activation-with-invalid-serial
-    // render-drm-device "/dev/dri/renderD129"
+    render-drm-device "/dev/dri/renderD129"
 }
 
 // spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "color-scheme" "prefer-dark"
