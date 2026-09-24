@@ -1,0 +1,6 @@
+CompileFlags:
+  # GCC 13+ supports -std=c++23; falls back gracefully if unsupported.
+  Add: [-std=c++23]
+  Compiler: clang++
+  # Avoid clangd dropping a -std flag supplied by a compile_commands.json.
+  Remove: [-std=*]
