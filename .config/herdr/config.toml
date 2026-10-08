@@ -1,17 +1,60 @@
 onboarding = false
 [keys]
-# Split into left/right panes (vertical divider)
-split_vertical = "prefix+|"
-# Split into top/bottom panes (horizontal divider)
-split_horizontal = "prefix+-"
+# tmux-style bindings (prefix = ctrl+b)
 
-# Tabs: n/p (like tmux windows)
+# Panes
+split_vertical = "prefix+|"        # left/right
+split_horizontal = "prefix+-"      # top/bottom
+cycle_pane_next = "prefix+o"       # tmux: o = next pane
+last_pane = "prefix+semicolon"     # tmux: ; = last pane
+rename_pane = "prefix+period"      # was prefix+shift+p (clashed with previous_workspace)
+# Focus / swap panes: hjkl or arrows (tmux: prefix+arrow)
+focus_pane_left = ["prefix+h", "prefix+left"]
+focus_pane_down = ["prefix+j", "prefix+down"]
+focus_pane_up = ["prefix+k", "prefix+up"]
+focus_pane_right = ["prefix+l", "prefix+right"]
+swap_pane_left = ["prefix+shift+h", "prefix+shift+left"]
+swap_pane_down = ["prefix+shift+j", "prefix+shift+down"]
+swap_pane_up = ["prefix+shift+k", "prefix+shift+up"]
+swap_pane_right = ["prefix+shift+l", "prefix+shift+right"]
+
+# Tabs = tmux windows
+new_tab = "prefix+c"
 next_tab = "prefix+n"
 previous_tab = "prefix+p"
+rename_tab = "prefix+comma"        # tmux: , = rename window
+close_tab = "prefix+ampersand"     # tmux: & = kill window
 
-# Spaces: shift+n/p
+# Spaces = tmux sessions
+new_workspace = "prefix+shift+c"   # was prefix+shift+n (clashed with next_workspace)
 next_workspace = "prefix+shift+n"
 previous_workspace = "prefix+shift+p"
+rename_workspace = "prefix+$" # tmux: $ = rename session
+workspace_picker = "prefix+s"      # tmux: s = choose session
+settings = "prefix+shift+s"        # was prefix+s
+
+# Session
+detach = "prefix+d"                # tmux: d = detach
+open_notification_target = "prefix+shift+o"  # was prefix+o (now next pane)
+
+# Break the focused pane out into its own tab (tmux: !)
+[[keys.command]]
+key = "prefix+!"
+type = "shell"
+command = "~/.config/herdr/break-pane.sh"
+description = "break pane into new tab"
+
+[theme]
+name = "terminal"   # use the host terminal's colours
+
+[theme.custom]
+# The terminal theme draws active-tab text in dark grey on blue; a black panel
+# background makes herdr use black text there instead.
+panel_bg = "black"
+
+[ui]
+# Do not auto-copy mouse selections; use Ctrl+C to copy
+copy_on_select = false
 
 # Native desktop notifications via the OS notification service (noctalia)
 [ui.toast]
@@ -24,3 +67,10 @@ position = "bottom-right"
 [ui.toast.clipboard]
 enabled = true
 position = "bottom-center"
+
+# Toggle a two-pane tab between top/bottom and left/right (like tmux prefix+space)
+[[keys.command]]
+key = "prefix+space"
+type = "shell"
+command = "~/.config/herdr/toggle-split.sh"
+description = "toggle split direction"
