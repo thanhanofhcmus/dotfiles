@@ -4,9 +4,11 @@ vim.diagnostic.config({
 })
 
 local cmp = require('cmp')
+require('snippets')
 
 cmp.setup({
     sources = {
+        { name = 'cpp_snippets' },
         { name = 'nvim_lsp' },
         { name = 'buffer' },
         { name = 'path' },
