@@ -1,10 +1,14 @@
-# TODO: Make this config machine diagnostic
+# If for some reason zsh is loading slowly, enable this
+# remember to uncomment zprof at the end of this file
+# zmodload zsh/zprof
 
+# oh-my-zsh
 export ZSH="$HOME/.oh-my-zsh"
-
 ZSH_THEME="af-magic" # set by `omz`
-
 plugins=(git z zsh-autosuggestions zsh-syntax-highlighting)
+# This must local after all the flags are set
+source $ZSH/oh-my-zsh.sh
+
 
 export LANG=en_US.UTF-8
 
@@ -50,7 +54,11 @@ if [[ $commands[vagrant] ]]  then
 fi
 
 if [[ $commands[eza] ]] then
-    alias l='eza --all --long --group-directories-first --binary --icons=auto'
+    alias l='eza --all --long --group-directories-first --binary --icons auto'
+fi
+
+if [[ $commands[lazygit] ]] then
+    alias lzg=lazygit
 fi
 
 if [[ $commands[terraform] ]] then
@@ -92,3 +100,5 @@ if [[ $commands[kubectl] ]]; then
 fi
 
 export TERM=xterm-256color
+# zprof
+
