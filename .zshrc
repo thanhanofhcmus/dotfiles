@@ -100,5 +100,7 @@ if [[ $commands[kubectl] ]]; then
 fi
 
 export TERM=xterm-256color
+export AWS_PAGER=''
+
 # zprof
 
