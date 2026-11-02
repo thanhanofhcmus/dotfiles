@@ -56,6 +56,10 @@ panel_bg = "black"
 # Do not auto-copy mouse selections; use Ctrl+C to copy
 copy_on_select = false
 
+[ui.sidebar.spaces]
+# state_text is always set, so every space gets two lines (not just git ones)
+rows = [["state_icon", "workspace"], ["state_text", "branch", "git_status"]]
+
 # Native desktop notifications via the OS notification service (noctalia)
 [ui.toast]
 delivery = "system"
