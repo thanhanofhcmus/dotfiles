@@ -30,6 +30,15 @@ require('lazy').setup({
             'nvim-treesitter/nvim-treesitter-context',
         },
         {
+            'MeanderingProgrammer/render-markdown.nvim',
+            ft = { 'markdown' },
+            dependencies = { 'nvim-treesitter/nvim-treesitter' },
+            opts = {
+                render_modes = { 'n', 'c', 't' }, -- raw text while in insert mode
+                anti_conceal = { enabled = true }, -- raw text on the cursor line
+            },
+        },
+        {
             "kylechui/nvim-surround",
             version = "^3.0.0",
             event = "VeryLazy",
