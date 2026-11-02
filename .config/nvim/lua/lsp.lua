@@ -7,6 +7,8 @@ local cmp = require('cmp')
 require('snippets')
 
 cmp.setup({
+    -- only show the menu when triggered manually (<C-Space> / <C-n>)
+    completion = { autocomplete = false },
     sources = {
         { name = 'cpp_snippets' },
         { name = 'nvim_lsp' },
