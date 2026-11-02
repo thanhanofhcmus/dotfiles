@@ -12,44 +12,20 @@ input {
     keyboard {
         xkb {
             layout "us"
-            // variant "dvorak"
         }
 
         numlock
     }
     touchpad {
-        // off
         tap
         dwt
         dwtp
-        // drag false
-        // drag-lock
         natural-scroll
-        // accel-speed 0.2
-        // accel-profile "flat"
-        // scroll-method "two-finger"
-        // disabled-on-external-mouse
-    }
-
-    mouse {
-        // off
-        // natural-scroll
-        // accel-speed 0.2
-        // accel-profile "flat"
-        // scroll-method "no-scroll"
-    }
-
-    trackpoint {
-        // off
-        // natural-scroll
-        // accel-speed 0.2
-        // accel-profile "flat"
-        // scroll-method "on-button-down"
-        // scroll-button 273
-        // scroll-button-lock
-        // middle-emulation
     }
 }
+
+// Ask apps to drop client-side title bars.
+prefer-no-csd
 
 layout {
     // Set gaps around windows in logical pixels.
@@ -77,13 +53,8 @@ layout {
     default-column-width { proportion 0.5; }
 
     focus-ring {
-        // off
-
         width 2
-
-        // Color of the ring on the active monitor.
         active-color "#7fc8ff"
-
         inactive-color "#505050"
     }
 }
@@ -93,14 +64,7 @@ hotkey-overlay { skip-at-startup; }
 // Set to null to disable saving screenshots to disk.
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
-animations {
-    // off
-    // slowdown 3.0
-}
-
 environment {
-    // QT_QPA_PLATFORMTHEME "qt6ct"
-    // XDG_THEME "Dark"
     QT_IM_MODULE "fcitx"
     QT_IM_MODULES "fcitx"
     XMODIFIERS "@im=fcitx"
@@ -135,6 +99,6 @@ window-rule {
 
 // Set the overview wallpaper on the backdrop.
 layer-rule {
-  match namespace="^noctalia-overview*"
+  match namespace="^noctalia-overview"
   place-within-backdrop true
 }
