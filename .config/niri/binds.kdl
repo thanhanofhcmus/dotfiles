@@ -21,8 +21,8 @@ binds {
     XF86AudioMute        hotkey-overlay-title="Mute"        allow-when-locked=true { spawn "noctalia" "msg" "volume-mute"; }
     XF86AudioMicMute     hotkey-overlay-title="Mute Microphone" allow-when-locked=true { spawn "noctalia" "msg" "mic-mute"; }
 
-    XF86MonBrightnessUp   hotkey-overlay-title="Brightness Up"   allow-when-locked=true { spawn "noctalia" "msg" "brightness-up"; }
-    XF86MonBrightnessDown hotkey-overlay-title="Brightness Down" allow-when-locked=true { spawn "noctalia" "msg" "brightness-down"; }
+    XF86MonBrightnessUp   hotkey-overlay-title="Brightness Up"   allow-when-locked=true { spawn "noctalia" "msg" "brightness-up" "*" "2%"; }
+    XF86MonBrightnessDown hotkey-overlay-title="Brightness Down" allow-when-locked=true { spawn "noctalia" "msg" "brightness-down" "*" "2%"; }
 
     XF86AudioPlay hotkey-overlay-title="Play/Pause"    allow-when-locked=true { spawn "noctalia" "msg" "media" "toggle"; }
     XF86AudioStop hotkey-overlay-title="Stop"           allow-when-locked=true { spawn "noctalia" "msg" "media" "stop"; }

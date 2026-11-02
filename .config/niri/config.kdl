@@ -1,6 +1,3 @@
-// Machine-specific overrides (monitors, render device, ...).
-include optional=true "local.config.kdl"
-
 // Keybindings.
 include "binds.kdl"
 
@@ -102,3 +99,7 @@ layer-rule {
   match namespace="^noctalia-overview"
   place-within-backdrop true
 }
+
+// Machine-specific overrides (monitors, render device, binds, ...).
+// Kept last so it wins over everything above.
+include optional=true "local.config.kdl"
