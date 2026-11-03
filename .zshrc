@@ -104,3 +104,8 @@ export AWS_PAGER=''
 
 # zprof
 
+# Claude Code image paste bug on Wayland + Xwayland: xclip returns an empty
+# X11 clipboard and wl-paste is never tried. Only alias when that setup exists.
+if [[ -n $WAYLAND_DISPLAY && -n $DISPLAY ]] && (( $+commands[wl-paste] )); then
+  alias claude='env -u DISPLAY claude'
+fi
